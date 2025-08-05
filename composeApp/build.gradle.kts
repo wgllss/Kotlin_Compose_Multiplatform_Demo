@@ -21,43 +21,52 @@ kotlin {
         }
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
+//    listOf(
+//        iosX64(),
+//        iosArm64(),
+//        iosSimulatorArm64()
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = "ComposeApp"
+//            isStatic = true
+//        }
+//    }
 
     jvm()
 
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        outputModuleName.set("composeApp")
-        browser {
-            val rootDirPath = project.rootDir.path
-            val projectDirPath = project.projectDir.path
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(rootDirPath)
-                        add(projectDirPath)
-                    }
-                }
-            }
-        }
-        binaries.executable()
-    }
+//    @OptIn(ExperimentalWasmDsl::class)
+//    wasmJs {
+//        outputModuleName.set("composeApp")
+//        browser {
+//            val rootDirPath = project.rootDir.path
+//            val projectDirPath = project.projectDir.path
+//            commonWebpackConfig {
+//                outputFileName = "composeApp.js"
+//                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+//                    static = (static ?: mutableListOf()).apply {
+//                        // Serve sources to debug inside browser
+//                        add(rootDirPath)
+//                        add(projectDirPath)
+//                    }
+//                }
+//            }
+//        }
+//        binaries.executable()
+//    }
 
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
+            //解析html
+            implementation("org.jsoup:jsoup:1.15.3")
+            implementation("com.squareup.retrofit2:retrofit:2.9.0")//只支持 Android 和 桌面端
+            implementation("com.squareup.retrofit2:converter-scalars:2.9.0")//只支持Android 和桌面端
+            implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")//只支持Android 和桌面端
+            implementation("com.squareup.okhttp3:okhttp:4.9.3")//只支持Android 和桌面端
+            implementation("com.squareup.okio:okio:2.10.0")//只支持Android 和桌面端
+            implementation("com.squareup.retrofit2:converter-gson:2.9.0")//只支持Android 和桌面端
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -68,6 +77,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            implementation("io.coil-kt.coil3:coil-compose:3.0.3") // 核心Compose支持 支持  Android、iOS、JVM（桌面端）、JavaScript 和 WASM 平台
+            implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.3")//支持  Android、iOS、JVM（桌面端）、JavaScript 和 WASM 平台
+            implementation("com.russhwolf:multiplatform-settings:1.2.0") // 跨平台版本KV存储 支持 Android/iOS/Desktop/JS/Native
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -75,6 +88,18 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+            //桌面程序中使用ViewModel
+            implementation("moe.tlaster:precompose:1.6.2") // 必须≥1.6.0
+            implementation("moe.tlaster:precompose-viewmodel:1.6.2") // 新增子模块
+
+            //解析html
+            implementation("org.jsoup:jsoup:1.15.3")
+            implementation("com.squareup.retrofit2:retrofit:2.9.0")//只支持 Android 和 桌面端
+            implementation("com.squareup.retrofit2:converter-scalars:2.9.0")//只支持Android 和桌面端
+            implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")//只支持Android 和桌面端
+            implementation("com.squareup.okhttp3:okhttp:4.9.3")//只支持Android 和桌面端
+            implementation("com.squareup.okio:okio:2.10.0")//只支持Android 和桌面端
+            implementation("com.squareup.retrofit2:converter-gson:2.9.0")//只支持Android 和桌面端
         }
     }
 }

@@ -3,6 +3,10 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     repositories {
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://maven.aliyun.com/repository/public")
+        maven("https://maven.aliyun.com/repository/google")
+        maven("https://packages.jetbrains.team/maven/p/compose/window-manager")
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
@@ -17,6 +21,10 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://maven.aliyun.com/repository/public")
+        maven("https://maven.aliyun.com/repository/google")
+        maven("https://packages.jetbrains.team/maven/p/compose/window-manager")
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
