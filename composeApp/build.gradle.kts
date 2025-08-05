@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -19,7 +20,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -30,9 +31,9 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     jvm()
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         outputModuleName.set("composeApp")
@@ -52,7 +53,7 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
@@ -78,10 +79,17 @@ kotlin {
     }
 }
 
+val properties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use { properties.load(it) }
+}
+
+val javaHomePath = properties.getProperty("jdkDirPath") ?: ""
+
 android {
     namespace = "com.wx.compose.multiplatform"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
-
     defaultConfig {
         applicationId = "com.wx.compose.multiplatform"
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -105,19 +113,31 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
-
 dependencies {
     debugImplementation(compose.uiTooling)
 }
-
 compose.desktop {
     application {
         mainClass = "com.wx.compose.multiplatform.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.Deb)
-            packageName = "com.wx.compose.multiplatform"
+            includeAllModules = true // 包含所有依赖
+            jvmArgs += listOf("-Dfile.encoding=UTF-8,--add-opens=java.base/java.lang=ALL-UNNAMED")
+            // 指定捆绑的 JRE 版本和路径
+            javaHome = javaHomePath//配置需要的 jdk 11环境变量 比如: "C:\\Users\\XXX\\.jdks\\openjdk-21.0.1",注意目录路径里面最好不要有中文
+            packageName = "multiplatform_compose_demo"
             packageVersion = "1.0.0"
+            // 启用桌面快捷方式（Windows/Linux）
+            windows {
+                iconFile.set(project.file("src/jvmMain/composeResources/drawable/qwer.ico"))
+                shortcut = true//安装完带快捷方式
+                menu = true//安装后 开始，程序 菜单栏里面有快捷方式
+            }
+        }
+
+        buildTypes.release.proguard {
+            isEnabled = false // 禁用混淆
         }
     }
 }
