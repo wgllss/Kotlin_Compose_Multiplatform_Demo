@@ -65,7 +65,7 @@ fun TabViewModel() {
                     )
 
                     Text(
-                        item.title, color = MaterialTheme.colorScheme.onPrimary, fontSize = 11.sp, modifier = Modifier.fillMaxWidth().background(Color(0x90000000)), textAlign = TextAlign.Center
+                        item.title, color = MaterialTheme.colorScheme.onPrimary, fontSize = 11.sp, modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10)).background(Color(0x90000000)), textAlign = TextAlign.Center
                     )
                 }
             }
