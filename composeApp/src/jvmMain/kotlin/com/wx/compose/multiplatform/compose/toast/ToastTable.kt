@@ -21,7 +21,6 @@ fun showToastSample() {
     Column(modifier = Modifier.padding(10.dp).fillMaxSize()) {
         Button(
             modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 0.dp).width(180.dp).height(40.dp), onClick = {
-//                viewModel.queryShiDaiMusic(text)
                 scope.launch {
                     ToastManager.showToast("你好，我是 Kotlin Compose Multiplatform Demo")
                 }

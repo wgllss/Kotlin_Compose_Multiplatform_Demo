@@ -1,8 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import java.util.Properties
 
 plugins {
@@ -11,6 +9,13 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+    id("org.openjfx.javafxplugin") version "0.1.0"
+    kotlin("plugin.serialization") version "1.9.0" // Kotlin 序列化插件
+}
+
+javafx {
+    version = "20.0.2"
+    modules = listOf("javafx.media", "javafx.graphics", "javafx-swing")
 }
 
 kotlin {
@@ -100,6 +105,32 @@ kotlin {
             implementation("com.squareup.okhttp3:okhttp:4.9.3")//只支持Android 和桌面端
             implementation("com.squareup.okio:okio:2.10.0")//只支持Android 和桌面端
             implementation("com.squareup.retrofit2:converter-gson:2.9.0")//只支持Android 和桌面端
+
+            val javafxPlatform = System.getProperty("os.name").lowercase().let {
+                when {
+                    it.contains("linux") -> "linux"
+                    it.contains("mac") -> "mac"
+                    else -> "win"
+                }
+            }
+
+            implementation("org.openjfx:javafx-base:20.0.2:$javafxPlatform") {
+                exclude(group = "org.openjfx", module = "javafx-base")
+            }  // 必须的基础模块:ml-citation{ref="7" data="citationList"}
+            implementation("org.openjfx:javafx-media:20.0.2:$javafxPlatform") {
+                exclude(group = "org.openjfx", module = "javafx-media")
+            }
+            implementation("org.openjfx:javafx-graphics:20.0.2:$javafxPlatform") {
+                exclude(group = "org.openjfx", module = "javafx-graphics")
+            }
+            implementation("org.openjfx:javafx-swing:20.0.2:$javafxPlatform") {
+                exclude(group = "org.openjfx", module = "javafx-swing")
+            }
+
+            // Kotlinx.Serialization
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+            // SQLite JDBC 驱动
+            implementation("org.xerial:sqlite-jdbc:3.42.0.0")
         }
     }
 }

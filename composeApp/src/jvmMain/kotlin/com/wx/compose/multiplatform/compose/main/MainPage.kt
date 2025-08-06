@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.wx.compose.multiplatform.compose.kvstore.KVStoreSample
 import com.wx.compose.multiplatform.compose.theme.setting
 import com.wx.compose.multiplatform.compose.fileselect.fileSelectSample
+import com.wx.compose.multiplatform.compose.music.ButtomPlay
 import com.wx.compose.multiplatform.compose.router.RouterSample
 import com.wx.compose.multiplatform.compose.toast.Toast
 import com.wx.compose.multiplatform.compose.sql.SqlSample
@@ -38,6 +39,7 @@ import com.wx.compose.multiplatform.compose.toast.showToastSample
 import com.wx.compose.multiplatform.compose.news.TabViewModel
 import com.wx.compose.multiplatform.compose.router.RouterFirst
 import com.wx.compose.multiplatform.routers.RouterUrls
+import com.wx.compose.multiplatform.viewmodels.PlayerViewModel
 import com.wx.compose.multiplatform.viewmodels.TabViewModel1
 import com.wx.compose.multiplatform.viewmodels.TabViewModel2
 import com.wx.compose.multiplatform.viewmodels.TabViewModel3
@@ -101,7 +103,7 @@ fun VerticalTabHost() {
         return@rememberPagerState pages.size
     })
     val coroutineScope = rememberCoroutineScope()
-//    val viewModelMusic = viewModel { PlayerViewModel() }
+    val viewModelMusic = viewModel { PlayerViewModel() }
 
     Row(Modifier.fillMaxSize()) {
         // 左侧竖向标签栏
@@ -151,14 +153,14 @@ fun VerticalTabHost() {
                         TabPage.Toast -> showToastSample()
                         TabPage.Routers -> NavGraph()
                         TabPage.KVSetting -> KVStoreSample()
-                        TabPage.SQL -> SqlSample()
-                        TabPage.Music -> MuSicSample()
+                        TabPage.SQL -> SqlSample(viewModelMusic)
+                        TabPage.Music -> MuSicSample(viewModelMusic)
                         TabPage.Video -> VideoSample()
                     }
                 }
             }
             Box {
-//                ButtomPlay(viewModelMusic)
+                ButtomPlay(viewModelMusic)
                 Toast()
             }
         }
