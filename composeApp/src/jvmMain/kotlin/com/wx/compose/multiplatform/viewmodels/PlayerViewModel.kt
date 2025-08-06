@@ -8,19 +8,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.wx.compose.multiplatform.PlatformKVStore.PlatformKVStore
 import com.wx.compose.multiplatform.compose.toast.ToastManager
+import com.wx.compose.multiplatform.core.utils.DownLoadUtils
 import com.wx.compose.multiplatform.core.utils.LrcTest
+import com.wx.compose.multiplatform.core.utils.OKIOUtils
 import com.wx.compose.multiplatform.core.utils.TImeUtils.convertLongToTime
 import com.wx.compose.multiplatform.dataSoruce.data.LrcEntry
 import com.wx.compose.multiplatform.dataSoruce.data.MusicItem
 import com.wx.compose.multiplatform.system_feature.music.JavaFixAudioPlayer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
+import java.io.File
 
 class PlayerViewModel : ViewModel() {
     private val player = JavaFixAudioPlayer(viewModelScope)
@@ -159,8 +165,25 @@ class PlayerViewModel : ViewModel() {
         player.getCurrItem()?.let { download(it) }
     }
 
-    fun download(playItem: MusicItem) {
-
+    fun download(item: MusicItem) {
+        viewModelScope.launch {
+            val downloadFileName = StringBuilder(item.name).append("-").append(item.singer).toString()
+            flow {
+                val downloads = PlatformKVStore.getDownloadDir()
+                item.run {
+                    OKIOUtils.writeJson(
+                        lrc, File(downloads, "${downloadFileName}.lrc").absolutePath
+                    )
+                    val file = File(downloads, "${downloadFileName}${musicSuffer}")
+                    DownLoadUtils.instance.download(url, file)
+                }
+                emit(0)
+            }.flowOn(Dispatchers.IO).catch {
+                ToastManager._errorText.value = "${downloadFileName}下载失败"
+            }.collect {
+                ToastManager._errorText.value = "${downloadFileName}下载成功"
+            }
+        }
     }
 
     fun remove(index: Int) = player.remove(index)

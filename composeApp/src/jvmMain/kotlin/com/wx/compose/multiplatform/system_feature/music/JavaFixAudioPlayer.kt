@@ -32,9 +32,7 @@ import kotlin.random.Random
 class JavaFixAudioPlayer(val scope: CoroutineScope) {
 
     private var mediaPlayer: MediaPlayer? = null
-    private val playlist = mutableListOf<MusicItem>(
-
-    )
+    private val playlist = mutableListOf<MusicItem>( )
 
     val _currentMusicName = MutableStateFlow("")
     val _currentMusicPicUrl = MutableStateFlow("")

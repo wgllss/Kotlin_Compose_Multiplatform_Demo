@@ -73,7 +73,7 @@ sealed class TabPage(val title: String) {
     object Routers : TabPage("路由")
     object Music : TabPage("音乐播放")
     object KVSetting : TabPage("KV存储")
-    object SQL : TabPage("数据库使用")
+    object SQL : TabPage("歌单")
     object Video : TabPage("视频播放")
 }
 
