@@ -1,18 +1,14 @@
-package com.wx.compose.multiplatform.compose.viewmodel
+package com.wx.compose.multiplatform.compose.news
 
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -34,21 +30,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.wx.compose.multiplatform.viewmodels.NetViewModel
-import moe.tlaster.precompose.viewmodel.viewModel
 
 @Composable
-fun TabViewModel() {
-    val viewModel = viewModel { NetViewModel() }
+fun TabViewModel(key:String,viewModel: NetViewModel) {
+//    val viewModel = viewModel { NetViewModel() }
     val items by viewModel.items.collectAsState()
     val gridState = rememberLazyGridState()
 
     LaunchedEffect(Unit) {
-        viewModel.getNetData()
+        viewModel.getNetData(key)
     }
 
     Box {
         LazyVerticalGrid(
-            modifier = Modifier.fillMaxWidth().padding(5.dp, 5.dp, 5.dp, 10.dp).fillMaxHeight(), columns = GridCells.Fixed(7), state = gridState, horizontalArrangement = Arrangement.spacedBy(7.dp), verticalArrangement = Arrangement.spacedBy(7.dp)
+            modifier = Modifier.fillMaxWidth().padding(5.dp, 5.dp, 5.dp, 10.dp).fillMaxHeight(), columns = GridCells.Fixed(5), state = gridState, horizontalArrangement = Arrangement.spacedBy(7.dp), verticalArrangement = Arrangement.spacedBy(7.dp)
         ) {
             items(items.size) { index ->
                 val item = items[index]

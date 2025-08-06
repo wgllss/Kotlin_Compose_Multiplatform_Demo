@@ -1,17 +1,18 @@
-package com.wx.compose.multiplatform.utils
+package com.wx.compose.multiplatform.PlatformKVStore
 
 import com.russhwolf.settings.PreferencesSettings
 import com.russhwolf.settings.get
 import com.wx.compose.multiplatform.Greeting
 import java.util.prefs.Preferences
 
-object WXKVStore {
+object PlatformKVStore {
+    val greeting by lazy { Greeting() }
 
     private val settings by lazy { PreferencesSettings(Preferences.userRoot()) }
 
     fun saveDownloadDir(path: String) = settings.putString("download_path", path)
 
-    fun getDownloadDir() = settings["download_path", Greeting().getDefaultDownloadPath()]
+    fun getDownloadDir() = settings["download_path", greeting.getDefaultDownloadPath()]
 
     fun saveCurrentPlay(position: Int) = settings.putInt("current_play_position", position)
 
@@ -28,5 +29,11 @@ object WXKVStore {
 
     //获取播放模式
     fun getPlayType() = settings["play_style", 0]
+
+    //保存String类型
+    fun saveStringData(key: String, data: String) = settings.putString(key, data)
+
+    //获取
+    fun getStringData(key: String, defaultStr: String) = settings[key, defaultStr]
 
 }

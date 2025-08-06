@@ -13,23 +13,21 @@ import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
-class NetViewModel : ViewModel() {
+open class NetViewModel : ViewModel() {
     var isFirstLoad = true
 
     private val _state = MutableStateFlow(mutableListOf<NewsBean>())
     val items: StateFlow<MutableList<NewsBean>> = _state.asStateFlow()
 
-    fun getNetData() {
+    fun getNetData(key: String) {
         if (!isFirstLoad) return
         viewModelScope.launch {
-            MyRepository.getNetTabInfo("BAI6I0O5wangning", 0, 20).flowOn(Dispatchers.IO).catch {
-                    ToastManager.shouToast(it.message.toString())
-                }.collect {
-                    _state.value = it
-                    isFirstLoad = false
-                }
+            MyRepository.getNetTabInfo(key, 0, 20).flowOn(Dispatchers.IO).catch {
+                ToastManager.showToast(it.message.toString())
+            }.collect {
+                _state.value = it
+                isFirstLoad = false
+            }
         }
-
     }
-
 }

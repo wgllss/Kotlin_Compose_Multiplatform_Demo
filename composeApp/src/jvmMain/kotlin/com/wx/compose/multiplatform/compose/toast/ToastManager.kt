@@ -19,7 +19,7 @@ object ToastManager {
         _errorText.emit("")
     }
 
-    suspend fun shouToast(errorMessage: String) {
+    suspend fun showToast(errorMessage: String) {
         _errorText.emit(errorMessage)
     }
 }

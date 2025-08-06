@@ -3,10 +3,10 @@ package com.wx.compose.multiplatform.compose.theme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.wx.compose.multiplatform.utils.WXKVStore
+import com.wx.compose.multiplatform.PlatformKVStore.PlatformKVStore
 
 object ThemeManager {
-    var skinThemeType by mutableStateOf(WXKVStore.getSkinType())
+    var skinThemeType by mutableStateOf(PlatformKVStore.getSkinType())
 
     var skinTheme by mutableStateOf(getColors(skinThemeType))
 
