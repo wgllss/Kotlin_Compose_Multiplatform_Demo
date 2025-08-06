@@ -13,7 +13,7 @@ class SettingViewModel : ViewModel() {
 
     fun setDownloadPath() {
         JFileChooser(PlatformKVStore.getDownloadDir()).apply {
-            fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+            fileSelectionMode = JFileChooser.DIRECTORIES_ONLY//FILES_ONLY ,FILES_AND_DIRECTORIES
             if (showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 val selectedDir = selectedFile.absolutePath
                 _downloadPath.value = selectedDir

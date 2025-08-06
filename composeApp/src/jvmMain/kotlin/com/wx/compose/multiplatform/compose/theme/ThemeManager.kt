@@ -8,9 +8,9 @@ import com.wx.compose.multiplatform.PlatformKVStore.PlatformKVStore
 object ThemeManager {
     var skinThemeType by mutableStateOf(PlatformKVStore.getSkinType())
 
-    var skinTheme by mutableStateOf(getColors(skinThemeType))
+    var skinTheme by mutableStateOf(getColorsSchemes(skinThemeType))
 
-    private fun getColors(skinType: Int) = when (skinType) {
+    private fun getColorsSchemes(skinType: Int) = when (skinType) {
         0 -> LightColors
         1 -> DarkColors
         2 -> Colors72

@@ -43,7 +43,7 @@ fun JvmApp(scope: WindowScope, isMaximized: Boolean, onCloseRequest: () -> Unit,
                             Icon(
                                 modifier = Modifier.padding(0.dp, 0.dp, 80.dp, 0.dp).clickable {
                                     minRequest.invoke()
-                                }.size(40.dp).padding(0.dp, 0.dp, 0.dp, 15.dp).align(Alignment.TopEnd), painter = painterResource("drawable/baseline_minimize_24.xml"), contentDescription = "关闭", tint = MaterialTheme.colorScheme.onPrimary
+                                }.size(40.dp).padding(0.dp, 0.dp, 0.dp, 15.dp).align(Alignment.TopEnd), painter = painterResource("drawable/baseline_minimize_24.xml"), contentDescription = "最小化", tint = MaterialTheme.colorScheme.onPrimary
                             )
                             Icon(
                                 modifier = Modifier.padding(0.dp, 0.dp, 40.dp, 0.dp).clickable {
