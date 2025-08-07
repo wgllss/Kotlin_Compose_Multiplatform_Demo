@@ -65,7 +65,6 @@ fun MuSicSample(viewModel: PlayerViewModel) {
     Row {
         Box(modifier = Modifier.fillMaxHeight(), contentAlignment = Alignment.Center) {
             RecordImage(viewModel, currentPicUrl)
-//            OutwardSpectrumVisualizer(viewModel)
             CircularAudioVisualizer(viewModel)
             AudioVisualizer(viewModel)
         }

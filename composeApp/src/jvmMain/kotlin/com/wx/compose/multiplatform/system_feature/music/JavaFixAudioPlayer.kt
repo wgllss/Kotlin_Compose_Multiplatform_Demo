@@ -113,15 +113,9 @@ class JavaFixAudioPlayer(val scope: CoroutineScope) {
                 playItem.takeIf { it.url.isNotEmpty() }?.run {
                     val downloadFileName = StringBuilder(name).append("-").append(singer).append(musicSuffer).toString()
                     val cacheFile = if (!localFile) {
-                        println("url -> ${playItem.url}")
                         File(PlatformKVStore.getDownloadDir(), downloadFileName).apply {
                             DownLoadUtils.instance.WXDownload2(playItem.url, this@apply)
                         }
-//                        val URL = URL(playItem.url)
-//                        File(PlatformKVStore.getDownloadDir(), downloadFileName).apply {
-//                            parentFile.mkdirs() // 播放直接下载到缓存目录
-//                            URL.openStream().use { it.copyTo(outputStream()) }
-//                        }
                     } else {
                         println("zou huan cun ")
                         File(PlatformKVStore.getDownloadDir(), downloadFileName)
