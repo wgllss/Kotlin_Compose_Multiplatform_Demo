@@ -13,6 +13,11 @@
 * **11.KV存储使用**
 * **12.数据库使用**
 
+##### 需要在 local.properties 文件中配置自己的jdk环境，以便打包可以把相关jdk环境捆绑打入 exe内部：如下：
+```
+jdkDirPath=D\:\\android_software\\openjdk-21.0.1
+```
+
 ![案例效果图1](https://raw.githubusercontent.com/wgllss/Kotlin_Compose_Multiplatform_Demo/master/pic/20250806141319_rec_.gif)
 ![案例效果图2](https://raw.githubusercontent.com/wgllss/Kotlin_Compose_Multiplatform_Demo/master/pic/20250807221624_rec_.gif)
 
